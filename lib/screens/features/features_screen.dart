@@ -79,6 +79,10 @@ class FeaturesScreen extends StatelessWidget {
 
             QuickActionsCard(
               onTransferTap: () {
+                if (!AppState.instance.user.isPlus) {
+                  PlusUpgradeDialog.show(context, featureName: 'Transfer ke Bank & E-Wallet');
+                  return;
+                }
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => const TransferScreen()),
                 );
@@ -89,6 +93,16 @@ class FeaturesScreen extends StatelessWidget {
                 );
               },
               onRequestTap: () {
+                if (!AppState.instance.user.isPlus) {
+                  PlusUpgradeDialog.show(context, featureName: 'Minta Saldo').then((upgraded) {
+                    if (upgraded == true && context.mounted) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const RequestBalanceScreen()),
+                      );
+                    }
+                  });
+                  return;
+                }
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => const RequestBalanceScreen()),
                 );
